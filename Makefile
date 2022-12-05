@@ -1,6 +1,6 @@
 NAME = philo
 SRC_DIR = src
-SRC = $(SRC_DIR)/main.c $(SRC_DIR)/ft_atoi.c
+SRC = $(SRC_DIR)/main.c $(SRC_DIR)/ft_atoi.c $(SRC_DIR)/eat.c
 OBJ = $(SRC:.c=.o)
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g
