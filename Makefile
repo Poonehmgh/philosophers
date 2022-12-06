@@ -4,7 +4,7 @@ SRC = $(SRC_DIR)/main.c $(SRC_DIR)/ft_atoi.c $(SRC_DIR)/eat.c
 OBJ = $(SRC:.c=.o)
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g
-DEBUGF = -fsanitize=address
+DEBUGF = -fsanitize=address 
 
 ifeq ($(DEBUG), 1)
 FSAN = $(DEBUGF)
