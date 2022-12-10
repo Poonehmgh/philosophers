@@ -6,7 +6,7 @@
 /*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:53 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/06 18:41:10 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/10 14:34:13 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 typedef struct fork
 {
-	pthread_mutex_t right_fork;
+	pthread_mutex_t fork;
 	bool			availability;
 } t_fork;
 
@@ -40,6 +40,8 @@ typedef struct timings
 	int		number_of_philos;
 	time_t	time_left_to_die;
 	t_fork			*forks;
+	pthread_mutex_t	died_philo_mutex;
+	bool			died_philo_flag;
 }	t_rules;
 
 
@@ -58,6 +60,8 @@ int		ft_atoi(const char *str);
 void	*fork_initialization(t_philo_data *data);
 void    *eating(t_philo_data *data);
 time_t	gettime_ms(t_philo_data *data);
+void    sleep_think(t_philo_data *data);
+void *daily_schedule(void *a);
 
 
 

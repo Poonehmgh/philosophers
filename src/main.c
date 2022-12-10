@@ -6,7 +6,7 @@
 /*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:35 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/06 18:42:52 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/10 16:19:41 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	rules_init(char **argv, t_rules *rules)
 	rules->number_of_philos = ft_atoi(argv[1]);
 	rules->min_meals = ft_atoi(argv[6]);
 	rules->forks = malloc(sizeof(t_fork) * ft_atoi(argv[2]));
+	rules->died_philo_flag = false;
 	int i = 0;
 	while (i < ft_atoi(argv[1]))
 	{
@@ -63,22 +64,35 @@ void data_init(t_philo_data *data, int philo_num)
 
 void *boss(void *a)
 {
-	t_philo_data *data;
+	t_philo_data	*data;
+	int				i;
+
 	data = *(t_philo_data **)a;
-	int i; 
 	i = 1;
 	int num = data[1].rules->number_of_philos;
-	while (i <= num && data[i].number_of_meals <= data[i].rules->min_meals)
+	while (i <= num && !data->rules->died_philo_flag) 
 	{
-		if (i == num )
+		if (i == num)
 			i = 1;
-		if (data[i].last_meal + data[i].rules->die_time - gettime_ms(&data[i]) >= data[i].rules->eat_time)
-			eating(data + i);
-		// if (data[i].last_meal + data[i].rules->die_time - gettime_ms(&data[i]) < data[i].rules->eat_time)
-		// {
-		// 	printf(" \033[0;35mphilosopher %d is dead. last meal %ld  current time %ld\x1B[0m\n", *data->philo_id, data->last_meal, gettime_ms(&data[i]));
-		// 	return (NULL);
-		// }	
+		if (data[i].last_meal + data[i].rules->die_time - gettime_ms(&data[i]) >= data[i].rules->eat_time && data[i].last_meal + data[i].rules->die_time - gettime_ms(&data[i]) <= 2 * data[i].rules->eat_time)
+			{
+				// printf("from the infinite loop: %ld\n", data[i].last_meal + data[i].rules->die_time - gettime_ms(&data[i]));
+			eating(data + i);}
+		else
+			sleep_think(data + i);
+		if (data[i].last_meal + data[i].rules->die_time - gettime_ms(&data[i]) < data[i].rules->eat_time)
+		{
+			pthread_mutex_lock(&data->rules->died_philo_mutex);
+			data->rules->died_philo_flag = true;
+			pthread_mutex_unlock(&data->rules->died_philo_mutex);
+			printf(" \033[0;35mphilosopher %d is dead. last meal %ld  current time %ld\x1B[0m\n", *data->philo_id, data->last_meal, gettime_ms(&data[i]));	
+			return (NULL);
+		}
+		if (!data->rules->died_philo_flag && data[i].number_of_meals == data->rules->min_meals)
+		{
+			printf("philosopher %d has eaten enough!\n", i);
+			// pthread_detach(data[i].thread);
+		}
 		i++;
 	}
 	return (NULL);
@@ -91,20 +105,10 @@ void *daily_schedule(void *a)
 	data = (t_philo_data *)a;
 	time = gettime_ms(data) - data->rules->start_time;
 	int i = 0;
-	while (i < data->rules->min_meals)
+	while (!data->rules->died_philo_flag && i < data->rules->min_meals)
 	{
 		eating(data);
-		printf("%ld ms: Philosopher %d started sleeping\n", gettime_ms(data), *data->philo_id);
-		usleep(data->rules->sleep_time * 1000);
-		printf("%ld ms: Philosopher %d ended sleeping\n", gettime_ms(data), *data->philo_id);
-		printf("%ld ms: Philosopher %d started thinking\n", gettime_ms(data), *data->philo_id);
-		usleep(data->rules->think_time * 1000);
-		printf("%ld ms: Philosopher %d ended thinking\n", gettime_ms(data), *data->philo_id);
-		// if ((data->rules->die_time + data->last_meal - gettime_ms(data) >= data->rules->eat_time && data->rules->die_time + data->last_meal - gettime_ms(data) <= 2 * data->rules->eat_time) || data->last_meal < 0 )
-		// 	eating(data);
-		// if (gettime_ms(data) - (int)data->last_meal >= data->rules->die_time) 
-		// 	printf(" \033[0;35mphilosopher %d is dead. last meal %ld  current time %ld\x1B[0m\n", *data->philo_id, data->last_meal, gettime_ms(data));
-		// printf("wtf? %ld  %d\n", data->last_meal, data->rules->die_time);
+		sleep_think(data);
 		i++;
 	}
 	free(data->philo_id);
@@ -163,13 +167,12 @@ int main (int argc, char **argv)
 			pthread_create(&(data[i].thread), NULL, &daily_schedule, data + i);
 		i++;
 	}
-	i = 1;
-	while(i <= ft_atoi(argv[1]))
+	i = 0;
+	while (i <= ft_atoi(argv[1]))
 	{
 		pthread_join(data[i].thread, NULL);
 		i++;
 	}
-
 	pthread_mutex_destroy(&rules->mutex);
 	free_atexit(data, rules, ft_atoi(argv[1]));
 }
