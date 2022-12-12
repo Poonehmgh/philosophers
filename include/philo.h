@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:53 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/10 14:34:13 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/11 20:13:07 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@ typedef struct timings
 	int	sleep_time;
 	int think_time;
 	int min_meals;
-	pthread_mutex_t mutex;
 	time_t	start_time;
 	int		number_of_philos;
 	time_t	time_left_to_die;
 	t_fork			*forks;
-	pthread_mutex_t	died_philo_mutex;
 	bool			died_philo_flag;
+	pthread_mutex_t	died_philo_mutex;
+	pthread_mutex_t counter;
+	pthread_mutex_t time_stamp;
 }	t_rules;
 
 
@@ -53,15 +54,16 @@ typedef struct philo_data
 	time_t	last_meal;
 	int		number_of_meals;
 	t_rules			*rules;
-	pthread_mutex_t	mutex;
+	pthread_mutex_t	meal_mutex;
 }	t_philo_data;
 
 int		ft_atoi(const char *str);
 void	*fork_initialization(t_philo_data *data);
-void    *eating(t_philo_data *data);
+bool    eating(t_philo_data *data);
 time_t	gettime_ms(t_philo_data *data);
 void    sleep_think(t_philo_data *data);
 void *daily_schedule(void *a);
+bool died_philo(t_philo_data *data);
 
 
 
