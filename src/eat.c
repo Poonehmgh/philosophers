@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 19:34:38 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/16 20:34:27 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/17 00:23:48 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ bool	take_left_fork(t_philo_data *data)
 	pthread_mutex_lock(&data->rules->forks[id + 1].fork);
 	if (data->rules->forks[id + 1].availability)
 	{
-		printf("4 I am philo %d and I am here this is my fork: %d\n", id, id + 1);
 		data->rules->forks[id + 1].availability = false;
 		return (true);
 	}
@@ -46,8 +45,6 @@ bool	take_left_fork(t_philo_data *data)
 
 bool	eating(t_philo_data *data)
 {
-	// if (*data->philo_id % 2 != 0)
-	// 	usleep(2000);
 	if (take_right_fork(data))
 	{
 		if (take_left_fork(data))
@@ -55,8 +52,8 @@ bool	eating(t_philo_data *data)
 			printf("\x1B[33m%ld philosopher %d has taken right fork.\n \x1B[0m", gettime_ms(data), *data->philo_id);
 			printf("\x1B[33m%ld philosopher %d has taken the left fork.\n \x1B[0m", gettime_ms(data), *data->philo_id);
 			pthread_mutex_lock(&data->meal_mutex);
-			usleep(1000 * data->rules->eat_time);
 			data->last_meal = gettime_ms(data);
+			usleep(1000 * data->rules->eat_time);
 			data->number_of_meals += 1;
 			printf("\x1B[34m%ldphilosopher %d finished eating. this was the %d meal.\n\x1B[0m", gettime_ms(data), *data->philo_id, data->number_of_meals);
 			data->rules->forks[*data->philo_id].availability = true;
@@ -65,7 +62,6 @@ bool	eating(t_philo_data *data)
 			if (*data->philo_id == data->rules->number_of_philos)
 			{
 				data->rules->forks[1].availability = true;
-				printf("fork 1 being changed here to be available\n");
 				pthread_mutex_unlock(&data->rules->forks[1].fork);
 			}
 			else
@@ -83,4 +79,3 @@ bool	eating(t_philo_data *data)
 	}
 	return (false);
 }
-

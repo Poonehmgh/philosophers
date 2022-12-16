@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:53 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/16 19:40:01 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/17 00:12:28 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void data_init(t_philo_data *data, t_rules *rules);
 void	rules_init(char **argv, t_rules *rules);
 time_t	gettime_ms(t_philo_data *data);
 bool	red_flag(t_philo_data *data);
+void	usleep_modified(int time, t_philo_data *data);
 
 
 
