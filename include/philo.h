@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:53 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/11 20:13:07 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/16 19:40:01 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,13 @@ time_t	gettime_ms(t_philo_data *data);
 void    sleep_think(t_philo_data *data);
 void *daily_schedule(void *a);
 bool died_philo(t_philo_data *data);
+void	free_atexit(t_philo_data *data, t_rules *rules, int num_philos);
+void clean_the_table(t_philo_data *data);
+void data_init(t_philo_data *data, t_rules *rules);
+void	rules_init(char **argv, t_rules *rules);
+time_t	gettime_ms(t_philo_data *data);
+bool	red_flag(t_philo_data *data);
+
 
 
 
