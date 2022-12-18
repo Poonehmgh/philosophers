@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:35 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/17 00:00:30 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/18 01:23:02 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void *the_boss(void *a)
 		if (gettime_ms(&data[i]) - data[i].last_meal >= data[i].rules->die_time && data[i].number_of_meals != 1)
 		{
 			pthread_mutex_lock(&data->rules->died_philo_mutex);
-			data->rules->died_philo_flag = true;
-			printf("\033[0;35mphilosopher %d is dead. last meal %ld  current time %ld\x1B[0m\n", *data[i].philo_id, data[i].last_meal, gettime_ms(&data[i]));
+			data[0].rules->died_philo_flag = true;
+			printf("\033[0;35mphilosopher %d is dead. last meal %ld  current time %ld \x1B[0m\n", *data[i].philo_id, data[i].last_meal, gettime_ms(&data[i]));
 			pthread_mutex_unlock(&data->rules->died_philo_mutex);
 			return (NULL);
 		}
@@ -55,39 +55,37 @@ void	*daily_schedule(void *a)
 	{
 		if (*data->philo_id % 2 == 0 && !died_philo(data))
 		{
-			if (!red_flag(data) && !died_philo(data))
-				eating(data);
-			else if (!died_philo(data) && red_flag(data))
+			while (!eating(data) && !died_philo(data))
 			{
-				while (red_flag(data) && !died_philo(data))
-					eating(data);
+				if (eating(data))
+					break ;
 			}
-			else
-				break ;
-			sleep_think(data);
-		}
-		else if (*data->philo_id != data->rules->number_of_philos && !died_philo(data))
-		{
-			usleep(data->rules->eat_time);
-			if (!red_flag(data) && !died_philo(data))
-				eating(data);
-			else if (red_flag(data) && !died_philo(data))
-			{
-				while (red_flag(data) && !died_philo(data))
-					eating(data);
-			}
-			else
-				break ;
-			sleep_think(data);
-		}
-		else
-		{
 			if (!died_philo(data))
 				sleep_think(data);
-			else
-				break ;
-			while (red_flag(data) && !died_philo(data))
-				eating(data);
+			// if (!red_flag(data) && !died_philo(data))
+			// 	eating(data);
+			// else if (!died_philo(data) && red_flag(data))
+			// {
+			// 	while (red_flag(data) && !died_philo(data))
+			// 		eating(data);
+			// }
+			// sleep_think(data);
+		}
+		else if (!died_philo(data))
+		{
+			sleep_think(data);
+			while(!eating(data) && !died_philo(data))
+			{
+				if (eating(data))
+					break ;
+			}
+			// if (!red_flag(data) && !died_philo(data))
+			// 	eating(data);
+			// else if (red_flag(data) && !died_philo(data))
+			// {
+			// 	while (red_flag(data) && !died_philo(data) && !eating(data))
+			// 		eating(data);
+			// }
 		}
 	}
 	free(data->philo_id);

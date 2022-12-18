@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 19:34:38 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/17 00:23:48 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/18 01:11:00 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,19 @@ bool	take_left_fork(t_philo_data *data)
 
 bool	eating(t_philo_data *data)
 {
-	if (take_right_fork(data))
+	if (take_right_fork(data) && !died_philo(data))
 	{
-		if (take_left_fork(data))
+		if (take_left_fork(data) && !died_philo(data))
 		{
 			printf("\x1B[33m%ld philosopher %d has taken right fork.\n \x1B[0m", gettime_ms(data), *data->philo_id);
 			printf("\x1B[33m%ld philosopher %d has taken the left fork.\n \x1B[0m", gettime_ms(data), *data->philo_id);
 			pthread_mutex_lock(&data->meal_mutex);
 			data->last_meal = gettime_ms(data);
-			usleep(1000 * data->rules->eat_time);
+			usleep_modified(data->rules->eat_time, data);
+			// usleep(1000 * data->rules->eat_time);
 			data->number_of_meals += 1;
-			printf("\x1B[34m%ldphilosopher %d finished eating. this was the %d meal.\n\x1B[0m", gettime_ms(data), *data->philo_id, data->number_of_meals);
+			if(!died_philo(data))
+				printf("\x1B[34m%ldphilosopher %d finished eating. this was the %d meal.\n\x1B[0m", gettime_ms(data), *data->philo_id, data->number_of_meals);
 			data->rules->forks[*data->philo_id].availability = true;
 			pthread_mutex_unlock(&data->rules->forks[*data->philo_id].fork);
 			pthread_mutex_unlock(&data->meal_mutex);
