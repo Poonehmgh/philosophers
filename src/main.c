@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:35 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/18 01:23:02 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/19 19:41:27 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ void *the_boss(void *a)
 	int				i;
 
 	data = *(t_philo_data **)a;
-	i = 1;
+	i = 1;	
 	while (!died_philo(data))
 	{
 		if (i == data->rules->number_of_philos)
 			i = 1;
-		if (gettime_ms(&data[i]) - data[i].last_meal >= data[i].rules->die_time && data[i].number_of_meals != 1)
+		if (gettime_ms(&data[i]) - data[i].last_meal >= data[i].rules->die_time + 50)
 		{
 			pthread_mutex_lock(&data->rules->died_philo_mutex);
 			data[0].rules->died_philo_flag = true;
-			printf("\033[0;35mphilosopher %d is dead. last meal %ld  current time %ld \x1B[0m\n", *data[i].philo_id, data[i].last_meal, gettime_ms(&data[i]));
+			printf("\033[0;35mphilosopher %d is dead. last meal %ld  current time %ld \x1B[0m\n", *data[i].philo_id, data[i].last_meal, gettime_ms(&data[i]) - 50);
 			pthread_mutex_unlock(&data->rules->died_philo_mutex);
 			return (NULL);
 		}

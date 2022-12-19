@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sleep_think.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:09:40 by pmoghadd          #+#    #+#             */
-/*   Updated: 2022/12/18 01:26:34 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/19 18:55:50 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	sleep_think(t_philo_data *data)
 		usleep(t);
 		t += 10;
 	}
-	printf("%d PHILO WITH RED FLAG %d  time %ld\n", *data->philo_id,red_flag(data), gettime_ms(data));
+	// printf("%d PHILO WITH RED FLAG %d  time %ld\n", *data->philo_id,red_flag(data), gettime_ms(data));
 	// while (red_flag(data), !died_philo(data)) //
 	// {
 	// 	if (eating(data))
