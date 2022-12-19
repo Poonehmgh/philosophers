@@ -3,14 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   eat.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 19:34:38 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/18 15:08:02 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/19 20:48:32 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../include/philo.h"
+
+void red()
+{
+  printf("\033[1;31m");
+}
+
+void yellow()
+{
+  printf("\033[1;33m");
+}
+
+void green()
+{
+  printf("\033[0;32m");
+}
+
+void white()
+{
+  printf("\033[0m");
+}
+
+
+
+char *food(int i)
+{
+	char *s[9] = {
+		"Ghorme Sabzi.",
+		"Hamburger.",
+		"Pizza.",
+		"Adas Polo.",
+		"Pasta with Pesto Sause.",
+		"Bratwurst.",
+		"Soup.",
+		"Aaaash.",
+	};
+	return (s[i]);
+}
 
 bool	take_right_fork(t_philo_data *data)
 {
@@ -49,15 +86,13 @@ bool	eating(t_philo_data *data)
 	{
 		if (take_left_fork(data) && !died_philo(data))
 		{
-			printf("\x1B[33m%ld philosopher %d has taken right fork.\n \x1B[0m", gettime_ms(data), *data->philo_id);
-			printf("\x1B[33m%ld philosopher %d has taken the left fork.\n \x1B[0m", gettime_ms(data), *data->philo_id);
+			print_msg("is eating", data, yellow, food(gettime_ms(data) % 7));
 			pthread_mutex_lock(&data->meal_mutex);
 			data->last_meal = gettime_ms(data);
 			usleep_modified(data->rules->eat_time, data);
-			// usleep(1000 * data->rules->eat_time);
 			data->number_of_meals += 1;
 			if(!died_philo(data))
-				printf("\x1B[34m%ldphilosopher %d finished eating. this was the %d meal.\n\x1B[0m", gettime_ms(data), *data->philo_id, data->number_of_meals);
+				print_msg("finished eating.", data, green, "");
 			data->rules->forks[*data->philo_id].availability = true;
 			pthread_mutex_unlock(&data->rules->forks[*data->philo_id].fork);
 			pthread_mutex_unlock(&data->meal_mutex);

@@ -6,7 +6,7 @@
 /*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:09:40 by pmoghadd          #+#    #+#             */
-/*   Updated: 2022/12/19 18:55:50 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:46:25 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ bool	counter(t_philo_data *data, int a, time_t b)
 	return (res);
 }
 
-void	print_msg(char *s, t_philo_data *data)
+void	print_msg(char *s, t_philo_data *data, void (*f)(), char *food)
 {
+	f();
 	pthread_mutex_lock(&data->rules->died_philo_mutex);
-	printf("%ld	philosopher %d %s\n", gettime_ms(data), *data->philo_id, s);
+	printf("%ld	philosopher %d %s %s\n", gettime_ms(data), *data->philo_id, s, food);
 	pthread_mutex_unlock(&data->rules->died_philo_mutex);
 }
 
@@ -72,21 +73,15 @@ void	sleep_think(t_philo_data *data)
 {
 	int t = 0;
 	if (!died_philo(data))
-		print_msg("is sleeping.", data);
+		print_msg("is sleeping.", data, white, "");
 	if (!died_philo(data))
 		usleep_modified(data->rules->sleep_time, data);
 	if (!died_philo(data))
-		print_msg("is thinking.", data);
+		print_msg("is thinking.", data, white, "");
 	t = 0;
 	while (!red_flag(data) && !died_philo(data))
 	{
 		usleep(t);
 		t += 10;
 	}
-	// printf("%d PHILO WITH RED FLAG %d  time %ld\n", *data->philo_id,red_flag(data), gettime_ms(data));
-	// while (red_flag(data), !died_philo(data)) //
-	// {
-	// 	if (eating(data))
-	// 		break ;
-	// }
 }

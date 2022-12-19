@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:53 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/17 00:12:28 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/19 20:45:49 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,13 @@ void	rules_init(char **argv, t_rules *rules);
 time_t	gettime_ms(t_philo_data *data);
 bool	red_flag(t_philo_data *data);
 void	usleep_modified(int time, t_philo_data *data);
+void	print_msg(char *s, t_philo_data *data, void (* f)(), char *food);
 
 
+void red ();
+void yellow();
+void green();
+void white();
 
 
 #endif
