@@ -12,7 +12,7 @@ else
 FSAN = 
 endif
 
-all: $(NAME)
+all: $(NAME) 
 
 $(NAME):
 	$(CC) $(CFLAGS) $(FSAN) $(SRC) -o $(NAME)

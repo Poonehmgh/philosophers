@@ -6,7 +6,7 @@
 /*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:35 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/20 15:19:16 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/20 19:45:30 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,40 @@ void	*daily_routine(void *a)
 	return (NULL);
 }
 
+void	init_mutexes(t_philo_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i <= data->rules->number_of_philos)
+	{
+		pthread_mutex_init(&data->rules->forks[i].fork, NULL);
+		i++;
+	}
+	pthread_mutex_init(&data->rules->died_philo_mutex, NULL);
+	pthread_mutex_init(&data->rules->ate_min_meal, NULL);
+}
+
 void	set_the_table_and_do_stuff(t_philo_data *data)
 {
 	int	i;
 	int	*a;
 
 	i = 0;
+	init_mutexes(data);
 	while (i <= data[0].rules->number_of_philos)
 	{
 		pthread_mutex_init(&data[i].meal_mutex, NULL);
 		a = malloc(sizeof(int));
 		*a = i;
 		data[i].philo_id = a;
-		if (i % 2)
-			usleep(50);
+		// if (i % 2)
+		// 	usleep(50);
 		if (i == 0)
+		{
 			pthread_create(&(data[i].thread), NULL, &table, &data);
+			free(a);
+		}
 		else
 			pthread_create(&(data[i].thread), NULL, &daily_routine, data + i);
 		i++;
@@ -92,5 +110,4 @@ int	main(int argc, char **argv)
 	data_init(data, rules);
 	set_the_table_and_do_stuff(data);
 	clean_the_table(data);
-	free_atexit(data, rules, ft_atoi(argv[1]));
 }

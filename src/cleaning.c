@@ -3,26 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:37:56 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/16 17:40:19 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/20 19:53:39 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../include/philo.h"
 
-void	free_atexit(t_philo_data *data, t_rules *rules, int num_philos)
+void	free_atexit(t_philo_data *data, t_rules *rules)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
+	if (rules->forks)
+	{
+		free(rules->forks);
+		rules->forks = NULL;
+	}
 	if (rules)
 	{
 		free(rules);
 		rules = NULL;
 	}
-	(void)num_philos;
 	if (data)
 	{
 		free(data);
@@ -44,7 +48,7 @@ void	clean_the_table(t_philo_data *data)
 	while (i <= data[0].rules->number_of_philos)
 	{
 		pthread_mutex_destroy(&data[i].meal_mutex);
-		pthread_mutex_destroy(&data[i].rules->time_stamp);
 		i++;
 	}
+	free_atexit(data, data->rules);
 }
