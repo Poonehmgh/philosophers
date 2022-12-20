@@ -6,7 +6,7 @@
 /*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:53 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/19 20:45:49 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/20 15:02:47 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,17 @@ typedef struct timings
 	int	die_time;
 	int	eat_time;
 	int	sleep_time;
-	int think_time;
 	int min_meals;
 	time_t	start_time;
 	int		number_of_philos;
 	time_t	time_left_to_die;
 	t_fork			*forks;
 	bool			died_philo_flag;
+	bool			all_ate_flag;
 	pthread_mutex_t	died_philo_mutex;
 	pthread_mutex_t counter;
 	pthread_mutex_t time_stamp;
+	pthread_mutex_t ate_min_meal;
 }	t_rules;
 
 
@@ -72,12 +73,11 @@ time_t	gettime_ms(t_philo_data *data);
 bool	red_flag(t_philo_data *data);
 void	usleep_modified(int time, t_philo_data *data);
 void	print_msg(char *s, t_philo_data *data, void (* f)(), char *food);
-
-
-void red ();
-void yellow();
-void green();
-void white();
-
+void	red(void);
+void	yellow(void);
+void	green(void);
+void	white(void);
+char	*dinner(int i);
+void	*table(void *a);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:57:08 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/17 16:26:39 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/20 12:45:11 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ void	rules_init(char **argv, t_rules *rules)
 	rules->die_time = ft_atoi(argv[2]);
 	rules->eat_time = ft_atoi(argv[3]);
 	rules->sleep_time = ft_atoi(argv[4]);
-	rules->think_time = ft_atoi(argv[5]);
 	rules->number_of_philos = ft_atoi(argv[1]);
-	rules->min_meals = ft_atoi(argv[6]);
+	if (argv[5])
+		rules->min_meals = ft_atoi(argv[5]);
+	else
+		rules->min_meals = -1;
 	rules->forks = malloc(sizeof(t_fork) * (ft_atoi(argv[1]) + 3));
 	rules->died_philo_flag = false;
 	int i = 1;

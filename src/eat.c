@@ -6,52 +6,14 @@
 /*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 19:34:38 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/19 20:48:32 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:48:24 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../include/philo.h"
 
-void red()
-{
-  printf("\033[1;31m");
-}
-
-void yellow()
-{
-  printf("\033[1;33m");
-}
-
-void green()
-{
-  printf("\033[0;32m");
-}
-
-void white()
-{
-  printf("\033[0m");
-}
-
-
-
-char *food(int i)
-{
-	char *s[9] = {
-		"Ghorme Sabzi.",
-		"Hamburger.",
-		"Pizza.",
-		"Adas Polo.",
-		"Pasta with Pesto Sause.",
-		"Bratwurst.",
-		"Soup.",
-		"Aaaash.",
-	};
-	return (s[i]);
-}
-
 bool	take_right_fork(t_philo_data *data)
 {
-
 	pthread_mutex_lock(&data->rules->forks[*data->philo_id].fork);
 	if (data->rules->forks[*data->philo_id].availability)
 	{
@@ -61,15 +23,14 @@ bool	take_right_fork(t_philo_data *data)
 	pthread_mutex_unlock(&data->rules->forks[*data->philo_id].fork);
 	return (false);
 }
-pthread_mutex_t test;
 
 bool	take_left_fork(t_philo_data *data)
 {
-	pthread_mutex_lock(&test);
-	int id = *data->philo_id;
+	int	id;
+
+	id = *data->philo_id;
 	if (*data->philo_id == data->rules->number_of_philos)
-		 id = 0;
-	pthread_mutex_unlock(&test);
+		id = 0;
 	pthread_mutex_lock(&data->rules->forks[id + 1].fork);
 	if (data->rules->forks[id + 1].availability)
 	{
@@ -80,22 +41,28 @@ bool	take_left_fork(t_philo_data *data)
 	return (false);
 }
 
+void	eating_sub_func(t_philo_data *data)
+{
+	print_msg("is eating", data, yellow, \
+				dinner((*data->philo_id + gettime_ms(data)) % 9));
+	pthread_mutex_lock(&data->meal_mutex);
+	data->last_meal = gettime_ms(data);
+	usleep_modified(data->rules->eat_time, data);
+	data->number_of_meals += 1;
+	if (!died_philo(data))
+		print_msg("finished eating.", data, green, "");
+	data->rules->forks[*data->philo_id].availability = true;
+	pthread_mutex_unlock(&data->rules->forks[*data->philo_id].fork);
+	pthread_mutex_unlock(&data->meal_mutex);
+}
+
 bool	eating(t_philo_data *data)
 {
 	if (take_right_fork(data) && !died_philo(data))
 	{
 		if (take_left_fork(data) && !died_philo(data))
 		{
-			print_msg("is eating", data, yellow, food(gettime_ms(data) % 7));
-			pthread_mutex_lock(&data->meal_mutex);
-			data->last_meal = gettime_ms(data);
-			usleep_modified(data->rules->eat_time, data);
-			data->number_of_meals += 1;
-			if(!died_philo(data))
-				print_msg("finished eating.", data, green, "");
-			data->rules->forks[*data->philo_id].availability = true;
-			pthread_mutex_unlock(&data->rules->forks[*data->philo_id].fork);
-			pthread_mutex_unlock(&data->meal_mutex);
+			eating_sub_func(data);
 			if (*data->philo_id == data->rules->number_of_philos)
 			{
 				data->rules->forks[1].availability = true;
@@ -104,7 +71,8 @@ bool	eating(t_philo_data *data)
 			else
 			{
 				data->rules->forks[*data->philo_id + 1].availability = true;
-				pthread_mutex_unlock(&data->rules->forks[*data->philo_id + 1].fork);
+				pthread_mutex_unlock(&data->rules-> \
+					forks[*data->philo_id + 1].fork);
 			}
 			return (true);
 		}
