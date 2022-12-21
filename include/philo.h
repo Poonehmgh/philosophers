@@ -6,7 +6,7 @@
 /*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:53 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/20 19:54:40 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/21 14:46:37 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct timings
 	bool			all_ate_flag;
 	pthread_mutex_t	died_philo_mutex;
 	pthread_mutex_t	ate_min_meal;
+	pthread_mutex_t printing;
 }	t_rules;
 
 typedef struct philo_data

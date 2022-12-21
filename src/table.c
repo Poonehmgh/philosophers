@@ -6,7 +6,7 @@
 /*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 15:01:15 by pmoghadd          #+#    #+#             */
-/*   Updated: 2022/12/20 19:51:49 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/21 14:48:48 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	change_death_flag_announce_death(t_philo_data *data, int id)
 {
 	pthread_mutex_lock(&data->rules->died_philo_mutex);
 	data[0].rules->died_philo_flag = true;
-	printf("\033[1;31m%ld	philosopher %d is dead.\n", \
-			gettime_ms(data), id);
-	// print_msg("is dead.", &data[i], red, "");
+	// printf("\033[1;31m%ld	philosopher %d is dead.\n", \
+	// 		gettime_ms(data), id);
+	print_msg("is dead.", &data[id], red, "");
 	pthread_mutex_unlock(&data->rules->died_philo_mutex);
 }
 
@@ -75,7 +75,7 @@ void	*table(void *a)
 	i = 1;
 	while (!died_philo(data))
 	{
-		if (i == data->rules->number_of_philos)
+		if (i >= data->rules->number_of_philos)
 			i = 1;
 		if (gettime_ms(&data[i]) - data[i].last_meal >= data[i].rules \
 				->die_time + 5)

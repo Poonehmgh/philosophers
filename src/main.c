@@ -6,7 +6,7 @@
 /*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:35 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/20 19:45:30 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/21 14:47:52 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@ void	init_mutexes(t_philo_data *data)
 	}
 	pthread_mutex_init(&data->rules->died_philo_mutex, NULL);
 	pthread_mutex_init(&data->rules->ate_min_meal, NULL);
+	pthread_mutex_init(&data->rules->printing, NULL);
 }
 
-void	set_the_table_and_do_stuff(t_philo_data *data)
+void	set_the_table(t_philo_data *data)
 {
 	int	i;
 	int	*a;
@@ -60,8 +61,8 @@ void	set_the_table_and_do_stuff(t_philo_data *data)
 		a = malloc(sizeof(int));
 		*a = i;
 		data[i].philo_id = a;
-		// if (i % 2)
-		// 	usleep(50);
+		if (i % 2 == 0)
+			usleep(50);
 		if (i == 0)
 		{
 			pthread_create(&(data[i].thread), NULL, &table, &data);
@@ -108,6 +109,6 @@ int	main(int argc, char **argv)
 	if (!data)
 		return (0);
 	data_init(data, rules);
-	set_the_table_and_do_stuff(data);
+	set_the_table(data);
 	clean_the_table(data);
 }

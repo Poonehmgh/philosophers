@@ -6,7 +6,7 @@
 /*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 19:34:38 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/20 14:48:24 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/21 14:50:04 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ bool	take_left_fork(t_philo_data *data)
 	int	id;
 
 	id = *data->philo_id;
-	if (*data->philo_id == data->rules->number_of_philos)
+	if (*data->philo_id == data->rules->number_of_philos && id != 1)
 		id = 0;
 	pthread_mutex_lock(&data->rules->forks[id + 1].fork);
 	if (data->rules->forks[id + 1].availability)
@@ -43,7 +43,8 @@ bool	take_left_fork(t_philo_data *data)
 
 void	eating_sub_func(t_philo_data *data)
 {
-	print_msg("is eating", data, yellow, \
+	if (!died_philo(data))
+		print_msg("is eating", data, yellow, \
 				dinner((*data->philo_id + gettime_ms(data)) % 9));
 	pthread_mutex_lock(&data->meal_mutex);
 	data->last_meal = gettime_ms(data);
@@ -58,9 +59,9 @@ void	eating_sub_func(t_philo_data *data)
 
 bool	eating(t_philo_data *data)
 {
-	if (take_right_fork(data) && !died_philo(data))
+	if (!died_philo(data) && take_right_fork(data))
 	{
-		if (take_left_fork(data) && !died_philo(data))
+		if (!died_philo(data) && take_left_fork(data))
 		{
 			eating_sub_func(data);
 			if (*data->philo_id == data->rules->number_of_philos)

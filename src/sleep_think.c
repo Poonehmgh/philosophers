@@ -6,7 +6,7 @@
 /*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:09:40 by pmoghadd          #+#    #+#             */
-/*   Updated: 2022/12/20 20:12:56 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/21 14:46:53 by pmoghadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	print_msg(char *s, t_philo_data *data, void (*f)(), char *food)
 {
 	f();
-	pthread_mutex_lock(&data->rules->died_philo_mutex);
+	pthread_mutex_lock(&data->rules->printing);
 	printf("%ld	philosopher %d %s %s\n", gettime_ms(data), \
 			*data->philo_id, s, food);
-	pthread_mutex_unlock(&data->rules->died_philo_mutex);
+	pthread_mutex_unlock(&data->rules->printing);
 }
 
 /**
