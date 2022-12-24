@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:57:08 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/20 19:45:04 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/23 16:30:13 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	rules_init(char **argv, t_rules *rules)
 	rules->died_philo_flag = false;
 	rules->all_ate_flag = false;
 	i = 1;
-	while (i <= rules->number_of_philos)
+	while (i <= rules->number_of_philos + 1)
 	{
 		rules->forks[i].availability = true;
 		i++;

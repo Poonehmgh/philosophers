@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:35 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/20 19:45:30 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/24 16:09:59 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,10 @@ void	*daily_routine(void *a)
 	data = a;
 	while (!died_philo(data))
 	{
-		if (*data->philo_id % 2 && !died_philo(data))
+		if (*data->philo_id % 2)
 			sleep_think(data);
-		while (!eating(data) && !died_philo(data))
-		{
-			if (eating(data))
-				break ;
-		}
-		if (*data->philo_id % 2 == 0 && !died_philo(data))
+		eating(data);
+		if (*data->philo_id % 2 == 0)
 			sleep_think(data);
 	}
 	free(data->philo_id);
@@ -37,7 +33,7 @@ void	init_mutexes(t_philo_data *data)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	while (i <= data->rules->number_of_philos)
 	{
 		pthread_mutex_init(&data->rules->forks[i].fork, NULL);
@@ -45,6 +41,7 @@ void	init_mutexes(t_philo_data *data)
 	}
 	pthread_mutex_init(&data->rules->died_philo_mutex, NULL);
 	pthread_mutex_init(&data->rules->ate_min_meal, NULL);
+	pthread_mutex_init(&data->rules->printing, NULL);
 }
 
 void	set_the_table_and_do_stuff(t_philo_data *data)
@@ -60,8 +57,6 @@ void	set_the_table_and_do_stuff(t_philo_data *data)
 		a = malloc(sizeof(int));
 		*a = i;
 		data[i].philo_id = a;
-		// if (i % 2)
-		// 	usleep(50);
 		if (i == 0)
 		{
 			pthread_create(&(data[i].thread), NULL, &table, &data);

@@ -3,22 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   sleep_think.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:09:40 by pmoghadd          #+#    #+#             */
-/*   Updated: 2022/12/20 20:12:56 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/24 16:24:39 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../include/philo.h"
 
+/**
+ * @brief to make sure that there would be no printing after
+ * someone dies or when everyone eats enough, 
+ * for printing we use mutexes.
+ * 
+ * @param s 
+ * @param data 
+ * @param f 
+ * @param food 
+ */
 void	print_msg(char *s, t_philo_data *data, void (*f)(), char *food)
 {
 	f();
-	pthread_mutex_lock(&data->rules->died_philo_mutex);
+	pthread_mutex_lock(&data->rules->printing);
 	printf("%ld	philosopher %d %s %s\n", gettime_ms(data), \
 			*data->philo_id, s, food);
-	pthread_mutex_unlock(&data->rules->died_philo_mutex);
+	pthread_mutex_unlock(&data->rules->printing);
 }
 
 /**
@@ -34,42 +44,28 @@ void	usleep_modified(int time, t_philo_data *data)
 	int	start;
 
 	start = gettime_ms(data);
-	while (1 && !died_philo(data))
+	while (!died_philo(data))
 	{
 		if (gettime_ms(data) - start >= time)
 			break ;
 	}	
 }
 
-bool	am_i_hungry(t_philo_data *data)
-{
-	int	left_time_b4_dieing;
-	int	now;
-
-	now = gettime_ms(data);
-	pthread_mutex_lock(&data->meal_mutex);
-	left_time_b4_dieing = data->rules->die_time + data->last_meal;
-	pthread_mutex_unlock(&data->meal_mutex);
-	if (left_time_b4_dieing - 1.4 * data->rules->eat_time <= gettime_ms(data))
-		return (true);
-	return (false);
-}
-
+/**
+ * @brief this function proceeds the sleeping and if someone dies 
+ * in the middle of sleeping time, then the program wont print anything.  
+ * 
+ * @param data 
+ */
 void	sleep_think(t_philo_data *data)
 {
 	int	t;
 
 	t = 0;
+	if (!data->rules->died_philo_flag)
+		print_msg("is sleeping.", data, yellow, "");
 	if (!died_philo(data))
-		print_msg("is sleeping.", data, white, "");
-	if (!died_philo(data))
-		usleep_modified(data->rules->sleep_time, data);
-	if (!died_philo(data))
+		usleep(data->rules->sleep_time * 1000);
+	if (!data->rules->died_philo_flag)
 		print_msg("is thinking.", data, white, "");
-	t = 0;
-	while (!am_i_hungry(data) && !died_philo(data))
-	{
-		usleep_modified(t, data);
-		t += 100;
-	}
 }

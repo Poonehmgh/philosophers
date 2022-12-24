@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmoghadd <pmoghadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:53 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/20 19:54:40 by pmoghadd         ###   ########.fr       */
+/*   Updated: 2022/12/24 16:09:22 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct timings
 	bool			all_ate_flag;
 	pthread_mutex_t	died_philo_mutex;
 	pthread_mutex_t	ate_min_meal;
+	pthread_mutex_t	printing;
 }	t_rules;
 
 typedef struct philo_data
@@ -55,7 +56,7 @@ typedef struct philo_data
 
 int		ft_atoi(const char *str);
 void	*fork_initialization(t_philo_data *data);
-bool	eating(t_philo_data *data);
+void	eating(t_philo_data *data);
 time_t	gettime_ms(t_philo_data *data);
 void	sleep_think(t_philo_data *data);
 void	*daily_schedule(void *a);
