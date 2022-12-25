@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 15:01:15 by pmoghadd          #+#    #+#             */
-/*   Updated: 2022/12/25 15:02:49 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/25 15:19:17 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ void	change_death_flag_announce_death(t_philo_data *data)
 	pthread_mutex_lock(&data->rules->died_philo_mutex);
 	data->rules->died_philo_flag = true;
 	pthread_mutex_unlock(&data->rules->died_philo_mutex);
-	print_msg("is", data, red, "dead.");
+	pthread_mutex_lock(&data->rules->printing);
+	red();
+	printf("%ld	philosopher %d is dead.\n", gettime_ms(data), *data->philo_id);
+	pthread_mutex_unlock(&data->rules->printing);
 }
 /**
  * @brief this is to check if everyone ate enough.
