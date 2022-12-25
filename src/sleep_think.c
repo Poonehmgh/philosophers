@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:09:40 by pmoghadd          #+#    #+#             */
-/*   Updated: 2022/12/24 16:24:39 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/25 14:28:13 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,11 @@ void	usleep_modified(int time, t_philo_data *data)
  */
 void	sleep_think(t_philo_data *data)
 {
-	int	t;
 
-	t = 0;
-	if (!data->rules->died_philo_flag)
+	if (!data->rules->died_philo_flag && !data->rules->all_ate_flag)
 		print_msg("is sleeping.", data, yellow, "");
 	if (!died_philo(data))
 		usleep(data->rules->sleep_time * 1000);
-	if (!data->rules->died_philo_flag)
+	if (!data->rules->died_philo_flag && !data->rules->all_ate_flag)
 		print_msg("is thinking.", data, white, "");
 }

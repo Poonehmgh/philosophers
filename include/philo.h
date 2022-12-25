@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:53 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/24 16:09:22 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/25 12:54:55 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 typedef struct fork
 {
 	pthread_mutex_t	fork;
-	bool			availability;
 }	t_fork;
 
 typedef struct timings
@@ -56,7 +55,7 @@ typedef struct philo_data
 
 int		ft_atoi(const char *str);
 void	*fork_initialization(t_philo_data *data);
-void	eating(t_philo_data *data);
+bool	eating(t_philo_data *data);
 time_t	gettime_ms(t_philo_data *data);
 void	sleep_think(t_philo_data *data);
 void	*daily_schedule(void *a);
@@ -76,5 +75,8 @@ void	green(void);
 void	white(void);
 char	*dinner(int i);
 void	*table(void *a);
+void	err(char *s);
+void	arg_check(char **argv);
+
 
 #endif

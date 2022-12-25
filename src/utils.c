@@ -1,49 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fancy_utils.c                                      :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/20 14:44:18 by pmoghadd          #+#    #+#             */
-/*   Updated: 2022/12/25 11:32:09 by pooneh           ###   ########.fr       */
+/*   Created: 2022/12/25 11:24:48 by pooneh            #+#    #+#             */
+/*   Updated: 2022/12/25 11:46:46 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../include/philo.h"
 
-void	red(void)
+void	err(char *s)
 {
-	printf("\033[1;31m");
+	red();
+	printf("%s", s);
+	exit(0);
 }
 
-void	yellow(void)
+void	arg_check(char **argv)
 {
-	printf("\033[1;33m");
-}
+	int	i;
 
-void	green(void)
-{
-	printf("\033[0;32m");
-}
-
-void	white(void)
-{
-	printf("\033[37m");
-}
-
-char	*dinner(int i)
-{
-	char	*s[9];
-
-	s[0] = "Ghorme Sabzi.";
-	s[1] = "Big Mac.";
-	s[2] = "Pizza.";
-	s[3] = "Adas Polo.";
-	s[4] = "Pasta Chicken Alfredo.";
-	s[5] = "Bratwurst.";
-	s[6] = "Soup.";
-	s[7] = "Noon Barbari.";
-	s[8] = "Abgoosht.";
-	return (s[i]);
+	i = 2;
+	if (ft_atoi(argv[1]) > 300)
+		err("\nError: number of philosophers should be less than 300.\n\n");
+	while (i < 5)
+	{
+		if (10000 < ft_atoi(argv[i]) || ft_atoi(argv[i]) < 60)
+			err("\nError: Invalid time, should be <= 10000 and >= 60 ms.\n\n");
+		i++;
+	}
 }

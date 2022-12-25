@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:57:08 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/23 16:30:13 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/25 13:30:13 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ time_t	gettime_ms(t_philo_data *data)
 void	rules_init(char **argv, t_rules *rules)
 {
 	struct timeval	t;
-	int				i;
 
 	gettimeofday(&t, NULL);
 	rules->start_time = t.tv_sec * 1000 + t.tv_usec * 0.001;
@@ -38,14 +37,10 @@ void	rules_init(char **argv, t_rules *rules)
 	else
 		rules->min_meals = -1;
 	rules->forks = malloc(sizeof(t_fork) * (rules->number_of_philos + 1));
+	if (!rules->forks)
+		return ;
 	rules->died_philo_flag = false;
 	rules->all_ate_flag = false;
-	i = 1;
-	while (i <= rules->number_of_philos + 1)
-	{
-		rules->forks[i].availability = true;
-		i++;
-	}
 }
 
 void	data_init(t_philo_data *data, t_rules *rules)
@@ -56,11 +51,6 @@ void	data_init(t_philo_data *data, t_rules *rules)
 	while (i <= rules->number_of_philos)
 	{
 		data[i].rules = rules;
-		i++;
-	}
-	i = 0;
-	while (i <= rules->number_of_philos)
-	{
 		data[i].last_meal = 0;
 		data[i].number_of_meals = 0;
 		i++;

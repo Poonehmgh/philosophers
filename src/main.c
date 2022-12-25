@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:35 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/24 16:09:59 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/25 14:25:23 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@ void	*daily_routine(void *a)
 	t_philo_data	*data;
 
 	data = a;
+	if (*data->philo_id % 2)
+		usleep(500 * data->rules->eat_time);
 	while (!died_philo(data))
 	{
-		if (*data->philo_id % 2)
+		if (*data->philo_id == data->rules->number_of_philos && data->rules->number_of_philos == 1)
 			sleep_think(data);
-		eating(data);
-		if (*data->philo_id % 2 == 0)
-			sleep_think(data);
+		if (!eating(data))
+			break ;
+		sleep_think(data);
 	}
 	free(data->philo_id);
 	return (NULL);
@@ -51,9 +53,14 @@ void	set_the_table_and_do_stuff(t_philo_data *data)
 
 	i = 0;
 	init_mutexes(data);
-	while (i <= data[0].rules->number_of_philos)
+	while (i <= data->rules->number_of_philos)
 	{
 		pthread_mutex_init(&data[i].meal_mutex, NULL);
+		i++;
+	}
+	i = 0;
+	while (i <= data[0].rules->number_of_philos)
+	{
 		a = malloc(sizeof(int));
 		*a = i;
 		data[i].philo_id = a;
@@ -73,20 +80,18 @@ void	input_validity(int argc, char **argv)
 	int	i;
 
 	if (argc != 6 && argc != 5)
-	{
-		perror("Error: input not valid.");
-		exit(0);
-	}
+		err("\nError: invalid number of arguments.\n\n");
 	i = 1;
 	while (argv[i])
 	{
 		if (ft_atoi(argv[i]) <= 0)
-		{
-			printf("Error: input not valid.\n");
-			exit(0);
-		}
+			err("\nError: input not valid.\n\n");
 		i++;
 	}
+	if (ft_atoi(argv[2]) < ft_atoi(argv[3]) + ft_atoi(argv[4]))
+		err("\nError: Time to die must be bigger than time to eat \
+			plus time to sleep.\n\n");
+	arg_check(argv);
 }
 
 int	main(int argc, char **argv)
