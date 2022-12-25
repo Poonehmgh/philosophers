@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:53 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/25 12:54:55 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/25 15:07:00 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,5 @@ char	*dinner(int i);
 void	*table(void *a);
 void	err(char *s);
 void	arg_check(char **argv);
-
 
 #endif

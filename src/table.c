@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 15:01:15 by pmoghadd          #+#    #+#             */
-/*   Updated: 2022/12/25 14:19:38 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/25 15:02:49 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	died_philo(t_philo_data *data)
 {
 	bool	res;
 	bool	res2;
-	
+
 	pthread_mutex_lock(&data->rules->died_philo_mutex);
 	res = data->rules->died_philo_flag;
 	pthread_mutex_unlock(&data->rules->died_philo_mutex);
@@ -46,16 +46,12 @@ bool	died_philo(t_philo_data *data)
 bool	all_philos_ate_enough(t_philo_data *data)
 {
 	int		i;
-	// int		tmp;
 
 	i = 1;
 	if (data->rules->min_meals == -1)
 		return (false);
 	while (i <= data->rules->number_of_philos)
 	{
-		// pthread_mutex_lock(&data[i].meal_mutex);
-		// tmp = data[i].number_of_meals;
-		// pthread_mutex_unlock(&data[i].meal_mutex);
 		if (data[i].number_of_meals < data->rules->min_meals)
 			break ;
 		i++;

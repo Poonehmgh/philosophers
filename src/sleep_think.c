@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:09:40 by pmoghadd          #+#    #+#             */
-/*   Updated: 2022/12/25 14:28:13 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/25 15:06:42 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	print_msg(char *s, t_philo_data *data, void (*f)(), char *food)
 {
 	f();
 	pthread_mutex_lock(&data->rules->printing);
-	printf("%ld	philosopher %d %s %s\n", gettime_ms(data), \
+	if (!data->rules->died_philo_flag && !data->rules->all_ate_flag)
+		printf("%ld	philosopher %d %s %s\n", gettime_ms(data), \
 			*data->philo_id, s, food);
 	pthread_mutex_unlock(&data->rules->printing);
 }
@@ -59,7 +60,6 @@ void	usleep_modified(int time, t_philo_data *data)
  */
 void	sleep_think(t_philo_data *data)
 {
-
 	if (!data->rules->died_philo_flag && !data->rules->all_ate_flag)
 		print_msg("is sleeping.", data, yellow, "");
 	if (!died_philo(data))

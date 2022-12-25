@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:35 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/25 14:25:23 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/25 15:06:29 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	*daily_routine(void *a)
 		usleep(500 * data->rules->eat_time);
 	while (!died_philo(data))
 	{
-		if (*data->philo_id == data->rules->number_of_philos && data->rules->number_of_philos == 1)
+		if (*data->philo_id == data->rules->number_of_philos
+			&& data->rules->number_of_philos == 1)
 			sleep_think(data);
 		if (!eating(data))
 			break ;
