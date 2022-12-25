@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:04:35 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/25 15:06:29 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/25 16:09:02 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,7 @@ void	input_validity(int argc, char **argv)
 		i++;
 	}
 	if (ft_atoi(argv[2]) < ft_atoi(argv[3]) + ft_atoi(argv[4]))
-		err("\nError: Time to die must be bigger than time to eat \
-			plus time to sleep.\n\n");
+		err("\nError: Time to die must be > time to eat + time to sleep.\n\n");
 	arg_check(argv);
 }
 

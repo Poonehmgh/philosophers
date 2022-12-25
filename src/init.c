@@ -6,7 +6,7 @@
 /*   By: pooneh <pooneh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:57:08 by pooneh            #+#    #+#             */
-/*   Updated: 2022/12/25 13:30:13 by pooneh           ###   ########.fr       */
+/*   Updated: 2022/12/25 15:23:22 by pooneh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void	rules_init(char **argv, t_rules *rules)
 		rules->min_meals = ft_atoi(argv[5]);
 	else
 		rules->min_meals = -1;
+	rules->died_philo_flag = false;
+	rules->all_ate_flag = false;
 	rules->forks = malloc(sizeof(t_fork) * (rules->number_of_philos + 1));
 	if (!rules->forks)
 		return ;
-	rules->died_philo_flag = false;
-	rules->all_ate_flag = false;
 }
 
 void	data_init(t_philo_data *data, t_rules *rules)
